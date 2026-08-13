@@ -15,11 +15,13 @@ namespace SalesCet107.Web.Data
         public async Task CreateAsync(T entity)
         {
             await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(T entity)
         {
             _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> ExistAsync(int id)
@@ -32,14 +34,17 @@ namespace SalesCet107.Web.Data
             return _context.Set<T>().AsNoTracking();
         }
 
-        public Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public Task UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+           _context.Set<T>().Update(entity);
+            await _context.SaveChangesAsync();
         }
+
+
     }
 }
