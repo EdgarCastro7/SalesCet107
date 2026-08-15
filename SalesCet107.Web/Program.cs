@@ -13,6 +13,8 @@ builder.Services.AddDbContext<DataContext>( o =>
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
+builder.Services.AddScoped<ICountryRepository, CountryRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

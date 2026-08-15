@@ -13,5 +13,6 @@ namespace SalesCet107.Web.Data
         public DbSet<Country> Countries { get; set; }
 
         public DbSet<Product> Products { get; set; }
+
     }
 }
