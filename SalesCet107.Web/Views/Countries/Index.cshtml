@@ -10,27 +10,24 @@
     <a asp-action="Create" class="btn btn-outline-primary">Criar Novo</a>
 </p>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Países</h3>
-            </div>
-
-            <div class="panel-body">
-                <table class="table table-hover table-responsive table-striped" id="MyTable">
-                    <thead>
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Name)
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
+<div class="col-md-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Paises</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover table-responsive table-striped" id="MyTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
                             <tr>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Name)
