@@ -1,17 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using Microsoft.EntityFrameworkCore;
 using SalesCet107.Web.Data;
 using SalesCet107.Web.Data.Entities;
+using SkiaSharp;
 
 namespace SalesCet107.Web.Controllers
 {
     public class CountriesController : Controller
     {
         private readonly ICountryRepository _countryRepository;
+        private readonly DataContext _context;
 
-        public CountriesController(ICountryRepository countryRepository)
+        public CountriesController(ICountryRepository countryRepository, DataContext context)
         {
             _countryRepository = countryRepository;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -88,20 +92,36 @@ namespace SalesCet107.Web.Controllers
                 return NotFound();
             }
 
+            bool nameExists = await _context.Countries
+          .AnyAsync(c => c.Name.ToLower() == country.Name.ToLower() && c.Id != country.Id);
+
+            if (nameExists)
+            {
+                ModelState.AddModelError("Name", "This country is already registered.");
+            }
+
             if (ModelState.IsValid)
             {
-                var allCountries = _countryRepository.GetAll();
-
-                if(allCountries.Any(e => e.Name == country.Name && e.Id != country.Id))
+                try
                 {
-                    ModelState.AddModelError("Name", "A country with that name already exists");
-
-                    return View(country);
+                    _context.Update(country);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CountryExists(country.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
 
                 await _countryRepository.UpdateAsync(country);
 
-                return RedirectToAction(nameof(Index));
             }
 
             return View(country);
