@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Mono.TextTemplating;
 using SalesCet107.Web.Data.Entities;
 
 namespace SalesCet107.Web.Data
@@ -9,6 +10,10 @@ namespace SalesCet107.Web.Data
         {
             
         }
+
+        public DbSet<State> States { get; set; }
+
+        public DbSet<City> Cities { get; set; }
 
         public DbSet<Country> Countries { get; set; }
 
